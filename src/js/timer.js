@@ -66,15 +66,26 @@ export default class Timer{
         return [this._shape, this._timeText, this._subtitleText, this._unitText];
     }
 
+    /**
+     * カウントを開始する
+     */
     start() {
         this.clear();
         this.timer = setInterval(this.countdown, 1000);
     }
 
+    /**
+     * カウンターを引数の値だけ増加させる
+     * @param count
+     */
     addCount(count){
         this.count = this.count + count;
+        this._timeText.text = `${this.count}`;
     }
 
+    /**
+     * カウントダウンプロセス
+     */
     countdown(){
         if (this.count > 0) {
             this.count --;
@@ -98,6 +109,9 @@ export default class Timer{
         }
     }
 
+    /**
+     * カウンターを初期化する
+     */
     clear() {
         if (this.timer != null) {
             clearInterval(this.timer);

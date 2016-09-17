@@ -68,4 +68,14 @@ export default class Util{
             }
         });
     }
+
+    /**
+     * min, maxの範囲のランダムな整数値を取得する
+     *
+     * @param min   最小の整数値
+     * @param max   最大の整数値
+     */
+    static getRondom(min, max){
+        return Math.floor( Math.random() * (max - min + 1) ) + min;
+    }
 }

@@ -5,18 +5,13 @@ const contextPath = "/lovelive";
 export var config = {
     system: {
         FPS: 30,
-        timeLength: 26000,
         gamescrean: {
             width: 640,
             height: 896
         },
-        anime: {
-            registrationFeedinTime: 500
-        },
-        difficultyLength: 0.3, 
-        firstCheckFrame: 10,
         featherFlyTime: 700,
-        gameTime: 20
+        gameTime: 20,
+        additionalTimeByItem: 3,
     },
     api:{
         login:      apiServerOrigin + contextPath + "/auth/twitter/login?redirect=shakarin",
@@ -216,8 +211,14 @@ export var properties = {
             ratioY: 0.5,
             scale: 1,
             alpha: 1
+        },
+        ITEM_MICAN: {
+            id : "ITEM_MICAN",
+            ratioX: 0.5,
+            ratioY: 0.5,
+            scale: 0.5,
+            alpha: 1
         }
-
     },
     spritesheet: {
         HANAMARU: {
@@ -329,6 +330,10 @@ export var properties = {
         },
         PI2: {
             id: "SOUND_PI2",
+            canMute: true
+        },
+        MICAN: {
+            id: "MICAN",
             canMute: true
         },
         TURN_SWITCH: {
@@ -540,6 +545,10 @@ export var manifest = {
         {
             id : "FEATHER",
             src: "img/FEATHER.png"
+        },
+        {
+            id : "ITEM_MICAN",
+            src: "img/ITEM_MICAN.png"
         }
     ],
     spritesheet:[
@@ -596,6 +605,10 @@ export var manifest = {
         {
             id : "TURN_SWITCH",
             src: "sound/TURN_SWITCH.mp3"
+        },
+        {
+            id : "MICAN",
+            src: "sound/MICAN.mp3"
         }
     ],
     load: [

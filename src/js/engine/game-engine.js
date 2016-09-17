@@ -3,6 +3,7 @@ import {config} from '../config.js'
 import Util from '../util.js'
 import Player from '../character/player.js';
 import Enemy from '../character/enemy.js';
+import Item from '../character/item.js';
 import Feather from '../character/feather.js';
 import ThrowAction from './throwAction.js';
 import Timer from  '../timer.js';
@@ -12,15 +13,18 @@ export default class GameEngine{
 		this.tick = tick;
 		this.callbackState = callbackState;
 
-		this.datenCount = 0;
-		this.gameFrame = 0;
-		this.nextCheckFrame = 20;
-		this.throwAction = null;
+		this.datenCount = 0;		// ゲームの得点
+		this.gameFrame = 0;			// フレームカウント
+		this.throwAction = null;	// 羽を投げる状態の管理オブジェクト
 
 		this.player = new Player();
 
-		this.enemy = null;
-		this.feathers = [];
+		this.enemy = null;			// よしこ
+		this.addTimeItem = null;		// タイマー加算アイテム
+		this.feathers = [];			// 黒き羽
+
+		this.frameOfAppearingAddTimeItem = 0;	// タイマー加算アイテムが次に出現するフレーム数
+		this.frameOfDisappearingAddTimeItem = 0;	// タイマー加算アイテムが消滅するフレーム数
 
 		this.timer = new Timer(config.system.gameTime, ()=>{
 			this.finish();
@@ -81,80 +85,91 @@ export default class GameEngine{
 					this.process();
 				});
 
+				// 最初のオブジェクト出現の定義
 				this.appearYoshiko();
+				this.frameOfAppearingAddTimeItem = Util.getRondom(100, 200);
+
 				break;
 		}
 	}
 
-	// ゲームメインプロセス-----------------------------------------
+	/***************************************
+	 * ゲームメインプロセス
+     */
 	process(){
 		this.gameFrame ++;
 		State.object.text.SCORE_COUNT.text = `×${this.datenCount}`;
+
+		// 当たり判定チェック
 		this.checkHit();
+
+		// 加算アイテム出現
+		if(this.frameOfAppearingAddTimeItem == this.gameFrame){
+			this.appearAddTimeItem();
+		}
+
+		// 加算アイテム消滅
+		if(this.addTimeItem != null && this.frameOfDisappearingAddTimeItem == this.gameFrame){
+			this.disappearAddTimeItem();
+		}
+
+		// 再描画
 		State.gameStage.update();
 	}
 
 	/**
-	 * 羽とよしこの当たり判定確認
+	 * 羽と画面内オブジェクトの当たり判定チェック
      */
 	checkHit(){
-		if(this.enemy != null){
-			this.feathers.forEach((feather)=>{
-				if(this.enemy.doseColideWithFeather(feather)){
-					this.enemy.hit();
-					State.object.sound.DATEN.play("none",0,0,0,1,0);
+		this.feathers.forEach((feather)=>{
+			// よしこ
+			if(this.enemy != null && this.enemy.doseColideWithFeather(feather)){
+				this.enemy.hit();
+				State.object.sound.DATEN.play("none",0,0,0,1,0);
 
-					this.datenCount ++;
-					this.appearYoshiko();
-				}
-			})
-		}
+				this.datenCount ++;
+				this.enemy = null;
+
+				this.appearYoshiko();
+			}
+			// 加点アイテム
+			if(this.addTimeItem != null && this.addTimeItem.doseColideWithFeather(feather)){
+				this.disappearAddTimeItem();
+
+				State.object.sound.MICAN.play("none",0,0,0,1,0);
+				this.timer.addCount(config.system.additionalTimeByItem);
+			}
+		})
 	}
 
-	/**
-	 * 羽をよしこに投げる
-	 *
-	 * @param radian 投げる角度
+	/****************************************
+	 * オブジェクト出現、消滅処理
      */
-	throwFeather(radian){
-		// 画面上方向の角度の場合はねを投げるモーションへ移行
-		if(radian < 0){
-			let feather = new Feather();
-			this.feathers.push(feather);
-			State.gameStage.addChildAt(feather.img, State.gameStage.getChildIndex(this.player.img));
-			feather.move(radian, ()=>{
-				this.feathers.shift();
-			});
-
-			this.player.throw();
-			State.object.sound.THROW.play("none",0,0,0,1,0);
-		}else{
-			// 画面下方向の角度の場合、待機モーションに移行して終了
-			this.player.wait();
-		}
-	}
-
-
-
-
-	// 敵出現---------------------------------------
 	appearYoshiko(){
-		let newYoshiko = new Enemy(this.getRandomX(), this.getRandomY());
+		let newYoshiko = new Enemy(
+			State.gameScrean.width  / 10 * Util.getRondom(1, 9),
+			State.gameScrean.height / 10 * Util.getRondom(1, 5));
 		State.gameStage.addChild(newYoshiko.img);
 
 		this.enemy = newYoshiko;
 	}
 
-	getRandomX(){
-		// 1-9のランダムな整数を取得する
-		let rand = Math.floor( Math.random() * 9 ) + 1;
+	appearAddTimeItem(){
+		let item = new Item(
+			State.gameScrean.width  / 10 * Util.getRondom(1, 9),
+			State.gameScrean.height / 10 * Util.getRondom(1, 5));
+		State.gameStage.addChild(item.img);
 
-		return State.gameScrean.width *rand / 10;
+		this.addTimeItem = item;
+
+		this.frameOfDisappearingAddTimeItem = this.gameFrame + 40;
 	}
-	getRandomY(){
-		// 1-5のランダムな整数を取得する
-		let rand = Math.floor( Math.random() * 5 ) + 1;
-		return State.gameScrean.height* rand/10;
+
+	disappearAddTimeItem(){
+		this.addTimeItem.hit();
+		this.addTimeItem = null;
+
+		this.frameOfAppearingAddTimeItem = this.gameFrame + Util.getRondom(80, 150);
 	}
 
 	/*******************************
@@ -212,4 +227,29 @@ export default class GameEngine{
 				break;
 		}
 	};
+
+	/**
+	 * 羽をよしこに投げる
+	 * Featherインスタンスを作成し、アニメーションを実行する
+	 *
+	 * @param radian 投げる角度
+	 */
+	throwFeather(radian){
+		// 画面上方向の角度の場合はねを投げるモーションへ移行
+		if(radian < 0){
+			let feather = new Feather();
+			this.feathers.push(feather);
+			State.gameStage.addChildAt(feather.img, State.gameStage.getChildIndex(this.player.img));
+			feather.move(radian, ()=>{
+				// 羽の移動アニメ終了後に、配列から削除
+				this.feathers.shift();
+			});
+
+			this.player.throw();
+			State.object.sound.THROW.play("none",0,0,0,1,0);
+		}else{
+			// 画面下方向の角度の場合、待機モーションに移行して終了
+			this.player.wait();
+		}
+	}
 }
