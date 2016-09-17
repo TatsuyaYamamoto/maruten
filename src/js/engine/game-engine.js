@@ -89,6 +89,8 @@ export default class GameEngine{
 				this.appearYoshiko();
 				this.frameOfAppearingAddTimeItem = Util.getRondom(100, 200);
 
+				State.object.sound.GAME_LOOP.play("none",0,0,-1,1,0);
+
 				break;
 		}
 	}
@@ -184,6 +186,9 @@ export default class GameEngine{
 		this.handleTouchEventListener().remove();
 
 		State.gameStage.update();
+
+		State.object.sound.GAME_LOOP.stop();
+		State.object.sound.GAME_END.play("none",0,0,0,1,0);
 
 		this.callbackState(this.player)
 	}
