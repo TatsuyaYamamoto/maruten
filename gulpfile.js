@@ -8,6 +8,7 @@ var gutil		= require('gulp-util');
 var webpack = require("gulp-webpack");
 var webserver   = require('gulp-webserver');
 var webpackConf = require('./webpack.config.js');
+var webpackConfPro = require('./webpack.config.pro.js');
 var config_secret	= require('./config.secret.json');
 var slack 		= require('gulp-slack')({
 	url: config_secret.slack.webhooks,
@@ -73,10 +74,10 @@ gulp.task('dist_pro', function(){
 		'del_dist',
 		[
 			'webpack_pro',
-			'dist_pro_html',
-			'dist_pro_img',
-			'dist_pro_lib',
-			'dist_pro_sound'
+			'package_html',
+			'package_img',
+			'package_lib',
+			'package_sound'
 		]);
 });
 
