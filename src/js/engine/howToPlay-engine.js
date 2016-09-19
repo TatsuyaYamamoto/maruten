@@ -16,7 +16,9 @@ export default class HowToPlayEngine extends GameEngine{
         Util.addChildren([
             State.object.image.BACKGROUND,
             State.object.image.BUTTON_BACK_MENU_FROM_HOW,
+            State.object.image.ITEM_MICAN,
             State.object.text.HOW_TO_PLAY,
+            State.object.text.INTRODUCTION_ITEM,
             this.player.img
         ]);
 
@@ -61,24 +63,6 @@ export default class HowToPlayEngine extends GameEngine{
         }
     }
 
-    // @Override
-    throwFeather(radian){
-        // 画面上方向の角度の場合はねを投げるモーションへ移行
-        if(radian < 0){
-            let feather = new Feather();
-            this.feathers.push(feather);
-            State.gameStage.addChildAt(feather.img, State.gameStage.getChildIndex(this.player.img));
-            feather.move(radian, ()=>{
-                this.feathers.shift();
-            });
-
-            this.player.throw();
-            State.object.sound.THROW.play("none",0,0,0,1,0);
-        }else{
-            // 画面下方向の角度の場合、待機モーションに移行して終了
-            this.player.wait();
-        }
-    }
     // @Override
     appearYoshiko(){
         if(this.enemy == null){
