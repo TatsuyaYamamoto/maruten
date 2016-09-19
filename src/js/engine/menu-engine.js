@@ -78,7 +78,7 @@ export default class MenuEngine {
         };
 
         const goToRanking = ()=> {
-            window.location.href = "http://games.sokontokoro-factory.net/ranking/?game=shakarin"
+            window.location.href = "http://games.sokontokoro-factory.net/ranking/?game=maruten"
         };
 
         const turnSoundSwitch = ()=>{
@@ -109,7 +109,7 @@ export default class MenuEngine {
             alertify.confirm("ログアウトします。ランキング登録はログイン中のみ有効です。", (result)=>{
                 if(result){
                     State.object.sound.OK.play("none",0,0,0,1,0);
-                    window.location.href = config.api.logout + "?redirect=shakarin";
+                    window.location.href = config.api.logout + "?redirect=maruten";
                 }else{
                     State.object.sound.BACK.play("none",0,0,0,1,0);
                 }
