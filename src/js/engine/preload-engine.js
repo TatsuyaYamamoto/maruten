@@ -89,6 +89,7 @@ export default class PreloadState{
         image.regY = image.image.height/2;
         image.scaleY = image.scaleX = State.screenScale * property.scale;
         image.alpha = property.alpha;
+        image.rotation = property.rotation;
         return image;
     }
 
@@ -136,6 +137,7 @@ export default class PreloadState{
         text.textAlign = property.align;
         text.lineHeight = State.gameScrean.width * property.lineHeight;
         text.text = property.text;
+        text.rotation = property.rotation;
 
         return text;
     }
