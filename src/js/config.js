@@ -1,5 +1,5 @@
 // 設定ファイル---------------------------------
-const apiServerOrigin = "http://localhost:8888";
+const apiServerOrigin = "http://api.sokontokoro-factory.net";
 const contextPath = "/lovelive";
 
 export var config = {
@@ -11,10 +11,10 @@ export var config = {
         },
         featherFlyTime: 700,
         gameTime: 20,
-        additionalTimeByItem: 3,
+        additionalTimeByItem: 4,
     },
     api:{
-        login:      apiServerOrigin + contextPath + "/auth/twitter/login?redirect=shakarin",
+        login:      apiServerOrigin + contextPath + "/auth/twitter/login?redirect=maruten",
         logout:     apiServerOrigin + contextPath + "/auth/twitter/logout/",
         score:      apiServerOrigin + contextPath + "/scores/maruten/me/",
         user:       apiServerOrigin + contextPath + "/users/me/",
@@ -72,66 +72,31 @@ export var properties = {
             scale: 1,
             alpha: 1
         },
-        BUTTON_LEFT: {
-            id : "BUTTON_LR",
-            ratioX: 0.1,
-            ratioY: 0.6,
-            scale: 1,
-            alpha: 1
-        },
-        BUTTON_RIGHT: {
-            id : "BUTTON_LR",
-            ratioX: 0.9,
-            ratioY: 0.6,
-            scale: 1,
-            alpha: 1
-        },
-        BUTTON_TOP: {
-            id : "BUTTON_UD",
-            ratioX: 0.48,
-            ratioY: 0.3,
-            scale: 1,
-            alpha: 1
-        },
-        BUTTON_BOTTOM: {
-            id : "BUTTON_UD",
-            ratioX: 0.5,
-            ratioY: 0.92,
-            scale: 1,
-            alpha: 1
-        },
-        RAMEN: {
-            id : "RAMEN",
-            ratioX: 0.1,
-            ratioY: 0.12,
-            scale: 1,
-            alpha: 1
-        },
         BUTTON_START: {
             id : "BUTTON_START",
             ratioX: 0.42,
-            ratioY: 0.25,
+            ratioY: 0.3,
             scale: 1,
             alpha: 1
         },
         BUTTON_HOW: {
             id : "BUTTON_HOW",
             ratioX: 0.55,
-            ratioY: 0.67,
+            ratioY: 0.76,
             scale: 1,
             alpha: 1
         },
         BUTTON_RANKING: {
             id : "BUTTON_RANKING",
-            ratioX: 0.35,
-            ratioY: 0.63,
+            ratioX: 0.3,
+            ratioY: 0.65,
             scale: 1,
             alpha: 1
         },
         BUTTON_CREDIT: {
             id : "BUTTON_CREDIT",
             ratioX: 0.4,
-            ratioY: 0.5,
+            ratioY: 0.53,
             scale: 1,
             alpha: 1
         },
@@ -151,8 +116,8 @@ export var properties = {
         },
         BUTTON_TWITTER_TOP: {
             id : "BUTTON_TWITTER_TOP",
-            ratioX: 0.4,
-            ratioY: 0.92,
+            ratioX: 0.9,
+            ratioY: 0.07,
             scale: 1,
             alpha: 1
         },
@@ -165,15 +130,15 @@ export var properties = {
         },
         BUTTON_TWITTER_LOGIN: {
             id : "BUTTON_TWITTER_LOGIN",
-            ratioX: 0.75,
-            ratioY: 0.94,
+            ratioX: 0.3,
+            ratioY: 0.96,
             scale: 1,
             alpha: 1
         },
         BUTTON_TWITTER_LOGOUT: {
             id : "BUTTON_TWITTER_LOGOUT",
-            ratioX: 0.4,
-            ratioY: 0.94,
+            ratioX: 0.3,
+            ratioY: 0.96,
             scale: 1,
             alpha: 1
         },
@@ -191,20 +156,6 @@ export var properties = {
             scale: 1,
             alpha: 1
         },
-        FLAG_START: {
-            id : "FLAG_START",
-            ratioX: 0.1,
-            ratioY: 0.1,
-            scale: 1,
-            alpha: 1
-        },
-        FLAG_END: {
-            id : "FLAG_END",
-            ratioX: 0.9,
-            ratioY: 0.1,
-            scale: 1,
-            alpha: 1
-        },
         FEATHER: {
             id : "FEATHER",
             ratioX: 0.5,
@@ -214,10 +165,25 @@ export var properties = {
         },
         ITEM_MICAN: {
             id : "ITEM_MICAN",
-            ratioX: 0.5,
-            ratioY: 0.5,
+            ratioX: 0.8,
+            ratioY: 0.73,
+            scale: 0.4,
+            alpha: 1
+        },
+        COUNT_YOSHIKO: {
+            id : "YOSHIKO",
+            ratioX: 0.77,
+            ratioY: 0.91,
             scale: 0.5,
             alpha: 1
+        },
+        RESULT_COUNT_YOSHIKO: {
+            id : "YOSHIKO",
+            ratioX: 0.33,
+            ratioY: 0.43,
+            scale: 0.5,
+            alpha: 1,
+            rotation: -10
         }
     },
     spritesheet: {
@@ -228,8 +194,6 @@ export var properties = {
             scale: 1,
             alpha: 1,
             frames: {
-                // width: 467,
-                // height: 467
                 width: 383,
                 height: 383
             },
@@ -276,13 +240,13 @@ export var properties = {
         },
         BUTTON_SOUND_SPRITESHEET: {
             id : "BUTTON_SOUND_SS",
-            ratioX: 0.2,
-            ratioY: 0.92,
+            ratioX: 0.76,
+            ratioY: 0.07,
             scale: 1,
             alpha: 1,
             frames:{
-                width : 123,
-                height : 112
+                width : 98,
+                height : 91
             },
             animations: {
                 on:{
@@ -359,7 +323,10 @@ export var properties = {
             align: "center",
             lineHeight: 0.05,
             text :
-                `やっぱり善子ちゃんはそうじゃないと！\n無理に普通になろうとする善子ちゃんに羽を挿して堕天させよう！\n善子ちゃんに向かって画面をスライドさせるずら！`
+                "「やっぱりよしこちゃんはそうじゃないと！」\n\n" +
+                "無理して普通になろうとする善子ちゃん。\n" +
+                "まるを操作して黒い羽でよしこを堕天させよう！\n\n" +
+                "指でスライドさせて投げるずら〜！"
         },
         SCORE_COUNT: {
             ratioX: 0.85,
@@ -370,13 +337,14 @@ export var properties = {
             lineHeight: 0.04,
             text: ""
         },
-        TIME_LEFT: {
-            ratioX: 0.25,
-            ratioY: 0.85,
-            size: 0.05,
+        RESULT_SCORE: {
+            ratioX: 0.4,
+            ratioY: 0.38,
+            size: 0.1,
             family: "Courier",
-            align: "right",
+            align: "left",
             lineHeight: 0.04,
+            rotation: -10,
             text: ""
         },
         GAMESTART_COUNT: {
@@ -442,13 +410,22 @@ export var properties = {
             color: "#ffffff",
             lineHeight: 0.1, 
             text: "ランキングシステム　通信完了！"
+        },
+        INTRODUCTION_ITEM: {
+            ratioX: 0.8,
+            ratioY: 0.6,
+            size: 0.04,
+            family: "Courier",
+            align: "center",
+            lineHeight: 0.05,
+            text: "＼I'm an item!／\n＼Shoot me!／"
         }
     },
     asyncImage: {
         TWITTER_ICON: {
             url : "",
             ratioX: 0.04,
-            ratioY: 0.91,
+            ratioY: 0.92,
             scale: 1.3,
             alpha: 1          
         }
@@ -487,20 +464,8 @@ export var manifest = {
             src: "img/BUTTON_RANKING.png"
         },
         {
-            id : "BUTTON_LR",
-            src: "img/BUTTON_LR.png"
-        },
-        {
-            id : "BUTTON_UD",
-            src: "img/BUTTON_UD.png"
-        },
-        {
             id : "BUTTON_TWITTER_TOP",
             src: "img/BUTTON_TWITTER_TOP.png"
-        },
-        {
-            id : "RAMEN",
-            src: "img/RAMEN.png"
         },
         {
             id : "GAMEOVER_TITLE",
@@ -529,14 +494,6 @@ export var manifest = {
         {
             id : "BUTTON_TWITTER_GAMEOVER_HANAMARU",
             src: "img/BUTTON_TWITTER_GAMEOVER_HANAMARU.png"
-        },
-        {
-            id : "FLAG_START",
-            src: "img/FLAG_START.png"
-        },
-        {
-            id : "FLAG_END",
-            src: "img/FLAG_END.png"
         },
         {
             id : "YOSHIKO",
