@@ -16,11 +16,15 @@ let _instance = null;
 
 export default class StateMachine{
     constructor(){
+        /* new からのインスタンス作成禁止 */
         if ( _instance !== null ) {
             throw new Error('SingleTon.instance()してね');
         }
+
+        /* 初回のインスタンス作成時 */
         if ( _instance === null ) {
             _instance = this;
+
             this.tick = new Tick();
         }
 
