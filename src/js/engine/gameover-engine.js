@@ -23,13 +23,16 @@ export default class GameoverEngine {
         // フィニッシュアニメーション
         this.player.finish();
 
+        // 表示スコア設定
+        State.object.text.RESULT_SCORE.text = `×${State.gameScore}`;
+
         Util.addChildren([
             State.object.image.BACKGROUND,
             State.object.image.BUTTON_BACK_MENU_FROM_GAME,
             State.object.image.BUTTON_RESTART,
             State.object.image.GAMEOVER_IMAGE,
-            State.object.text.SCORE_COUNT,
-            State.object.spritesheet.YOSHIKO,
+            State.object.text.RESULT_SCORE,
+            State.object.image.RESULT_COUNT_YOSHIKO,
             State.object.image.GAMEOVER_TITLE
         ]);
         switch(State.playCharacter){
@@ -63,7 +66,7 @@ export default class GameoverEngine {
         };
         const tweet = ()=>{
             window.location.href=
-                `https://twitter.com/intent/tweet?hashtags=しゃかりん！&text=${this.getTweetText()}&url=http://games.sokontokoro-factory.net/maruten/`;
+                `https://twitter.com/intent/tweet?hashtags=まるてん！&text=${this.getTweetText()}&url=http://games.sokontokoro-factory.net/maruten/`;
         };
 
         return {
@@ -86,22 +89,27 @@ export default class GameoverEngine {
      */
     getTweetText(){
         switch(State.playCharacter){
-            case "rin":
+            case "hanamaru":
                 if(State.gameScore == 0){
-                    return `まる「ちょっと寒くないかにゃー？」`;
+                    switch(Math.floor(Math.random() * 2)){
+                        case 0:
+                            return `まる「いや、まるには無理ず、、、いや、むり、、。」`;
+                        case 1:
+                            return `まる「おらには無理ずら、、、、、。」`;
+                    }
                 }
 
                 switch(Math.floor(Math.random() * 4)){
                     case 0:
-                        return `まる「ちいさなマラカス♪しゃかしゃか${State.gameScore}しゃかー！」`;
+                        return `まる「やーっぱり、よしこちゃんは${State.gameScore}ヨハネじゃないと！」`;
                     case 1:
-                        return 'まる「それより今日こそ先輩のところに行って"しゃかりんやります！"って言わなきゃ！」'+_gameScore+"しゃか！";
+                        return `まる「ずら！まるがお願い聞いたずら！危なくなったら止めてと！」${State.gameScore}ヨハネ！`;
                     case 2 :
-                        return `まる「待って！しゃかしゃかするなら凛が！凛が！ 凛が${State.gameScore}しゃかするの！！」`;
+                        return `まる「さぁ！まるてん行くずらー！」 ${State.gameScore}ヨハネ！`;
                     case 3 :
-                        return `エリチカ？「${State.gameScore}しゃかァ？認められないわァ」`;
+                        return `まる「まさか${State.gameScore}ヨハネも堕天するとは思わなかったずら」`;
                 }
         }
-        return State.gameScore + "しゃか！";
+        return State.gameScore + "ヨハネ！";
     }
 }
