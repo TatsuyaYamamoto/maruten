@@ -17,10 +17,10 @@ export default class Enemy{
 
         this.img.regX = State.object.spritesheet.YOSHIKO.regX;
         this.img.regY = State.object.spritesheet.YOSHIKO.regY;
-        this.img.scaleY = this.img.scaleX = State.screenScale * 0.7;
+        this.img.scaleY = this.img.scaleX = State.screenScale * 0.8;
         this.img.alpha = properties.spritesheet.YOSHIKO.alpha;
 
-        this.collisionRadius = properties.spritesheet.YOSHIKO.frames.width * properties.spritesheet.YOSHIKO.scale /2 * State.screenScale * 1.2;
+        this.collisionRadius = properties.spritesheet.YOSHIKO.frames.width * properties.spritesheet.YOSHIKO.scale /2 * State.screenScale * 1.5;
 
         this.img.gotoAndPlay("wait");
 

@@ -22,13 +22,13 @@ export default class Item{
 
         this.collisionRadius = properties.spritesheet.YOSHIKO.frames.width * properties.spritesheet.YOSHIKO.scale /2 * State.screenScale * 1.2;
 
-        // デバッグ用当たり判定円
-        var g = new createjs.Graphics();
-        g.beginStroke("#000");
-        g.beginFill("#000");
-        g.drawCircle(this.img.x,this.img.y,this.collisionRadius);
-        var shape=new createjs.Shape(g);
-        State.gameStage.addChild(shape)
+        // // デバッグ用当たり判定円
+        // var g = new createjs.Graphics();
+        // g.beginStroke("#000");
+        // g.beginFill("#000");
+        // g.drawCircle(this.img.x,this.img.y,this.collisionRadius);
+        // var shape=new createjs.Shape(g);
+        // State.gameStage.addChild(shape)
     }
 
     /**
