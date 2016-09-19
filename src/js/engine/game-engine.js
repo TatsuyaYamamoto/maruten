@@ -74,7 +74,7 @@ export default class GameEngine{
 					State.object.image.BACKGROUND,
 					this.player.img,
 					State.object.text.SCORE_COUNT,
-					State.object.spritesheet.YOSHIKO
+					State.object.image.COUNT_YOSHIKO
 				].concat(this.timer.getElementArray()));
 
 				this.tick.remove();
@@ -89,7 +89,7 @@ export default class GameEngine{
 				this.appearYoshiko();
 				this.frameOfAppearingAddTimeItem = Util.getRondom(100, 200);
 
-				State.object.sound.GAME_LOOP.play("none",0,0,-1,1,0);
+				State.object.sound.GAME_LOOP.play("none",0,0,-1,0.4,0);
 
 				break;
 		}
@@ -188,7 +188,7 @@ export default class GameEngine{
 		State.gameStage.update();
 
 		State.object.sound.GAME_LOOP.stop();
-		State.object.sound.GAME_END.play("none",0,0,0,1,0);
+		State.object.sound.GAME_END.play("none",0,0,0,0.4,0);
 
 		this.callbackState(this.player)
 	}
