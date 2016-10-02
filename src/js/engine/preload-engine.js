@@ -1,6 +1,7 @@
 import State from '../state.js';
-import loadImageBase64 from '../loadImageBase64.js'
+import loadImageBase64 from '../imageBase64/loadImageBase64.js'
 import { config, properties, manifest } from '../config.js';
+import BrandingAnimation from '../branding-animation.js';
 
 export default class PreloadState{
     constructor(tick, callback){
@@ -13,67 +14,78 @@ export default class PreloadState{
      * ContentStateのエントリーメソッド
      */
     start(){
-        const loadImage = new createjs.Bitmap(loadImageBase64);
-        loadImage.scaleY = loadImage.scaleX = State.screenScale;
-        loadImage.x = State.gameScrean.width * 0.5;
-        loadImage.y = State.gameScrean.height * 0.5;
-        loadImage.regX = loadImage.image.width * 0.5;
-        loadImage.regY = loadImage.image.height * 0.5;
-
-        var loadText = new createjs.Text();
-        loadText.x = State.gameScrean.width * 1/2;
-        loadText.y = State.gameScrean.height * 7/8;
-        loadText.font = State.gameScrean.width * 1/10 + "px " + "Courier";
-        loadText.textAlign = "center";
+        const loadImage = PreloadState.getLoadImage();
+        const loadText = PreloadState.getLoadText();
+        const brandingAnimation = new BrandingAnimation({
+            x: State.gameScrean.width * 1/2,
+            y: State.gameScrean.height * 1/2,
+            width: State.gameScrean.width,
+            height: State.gameScrean.height,
+            scale: State.screenScale
+        });
 
         State.gameStage.removeAllChildren();
         State.gameStage.addChild(loadText);
         State.gameStage.addChild(loadImage);
+        State.gameStage.addChild(brandingAnimation.container);
 
         this.queue.installPlugin(createjs.Sound);
         this.queue.setMaxConnections(6);
 
+        this.queue.loadManifest(manifest.sound, false);
         this.queue.loadManifest(manifest.image, false);
         this.queue.loadManifest(manifest.spritesheet, false);
-        this.queue.loadManifest(manifest.sound, false);
 
+        /**
+         * ロードプロセスイベント
+         */
         this.queue.on("progress", (event)=>{
-            loadImage.rotation = event.loaded * 360;
-            loadImage.x = State.gameScrean.width * event.loaded;
-
+            // ロード情報
             loadText.text = `loading...${Math.floor(event.loaded * 100)}%`
+
+            // 回転ことりちゃんプログレス
+            loadImage.rotation = event.loaded * 360 * 4;
         });
 
+        /**
+         * ロード完了イベント
+         */
         this.queue.on("complete", ()=>{
             // すべてのコンテンツに設定を付与する
             Object.keys(properties.spritesheet).forEach((key)=> {
-                State.object.spritesheet[key] = this.getSpriteSheetContents(properties.spritesheet[key]);
+                const prop = properties.spritesheet[key];
+                const preloadResult = this.queue.getResult(prop.id);
+                State.object.spritesheet[key] = PreloadState.getSpriteSheetContents(preloadResult, prop);
             });
             Object.keys(properties.sound).forEach((key)=> {
-                State.object.sound[key] = this.getSoundContent(properties.sound[key]);
+                State.object.sound[key] = PreloadState.getSoundContent(properties.sound[key]);
             });
             Object.keys(properties.text).forEach((key)=> {
-                State.object.text[key] = this.getTextContent(properties.text[key]);
+                State.object.text[key] = PreloadState.getTextContent(properties.text[key]);
             });
             Object.keys(properties.image).forEach((key)=> {
-                State.object.image[key] = this.getImageContent(properties.image[key]);
+                const prop = properties.image[key];
+                const preloadResult = this.queue.getResult(prop.id);
+                State.object.image[key] = PreloadState.getImageContent(preloadResult, prop);
             });
-
             State.deferredCheckLogin.then(
-                (response)=>{
+                (isLoggedin)=>{
                     Object.keys(properties.asyncImage).forEach((key)=> {
-                        State.object.image[key] = this.getAsyncImageContent(properties.asyncImage[key]);
+                        State.object.image[key] = PreloadState.getAsyncImageContent(properties.asyncImage[key]);
                     });
+                }
+            );
+
+            brandingAnimation.promise.then(
+                ()=>{
                     this.tick.remove();
                     this.callback();
-                },
-                (error)=>{
-                    this.tick.remove();
-                    this.callback();
-                });
+                }
+            );
         });
 
         /* 読み込み開始 */
+        brandingAnimation.start();
         this.tick.add(()=>{
             State.gameStage.update();
         });
@@ -81,8 +93,8 @@ export default class PreloadState{
     }
 
     //ロードしたコンテンツをセット------------------------------------------
-    getImageContent(property){
-        var image = new createjs.Bitmap(this.queue.getResult(property.id));
+    static getImageContent(preloadResult, property){
+        var image = new createjs.Bitmap(preloadResult);
         image.x = State.gameScrean.width * property.ratioX;
         image.y = State.gameScrean.height * property.ratioY;
         image.regX = image.image.width/2;
@@ -93,25 +105,20 @@ export default class PreloadState{
         return image;
     }
 
-    getAsyncImageContent(property){
+    static getAsyncImageContent(property){
 
         var image = new createjs.Bitmap(property.url);
         image.x = State.gameScrean.width * property.ratioX;
         image.y = State.gameScrean.height * property.ratioY;
-        // image.regX = image.width/2;
-        // image.regY = image.height/2;
         image.scaleY = image.scaleX = State.screenScale * property.scale;
         image.alpha = property.alpha;
-
-        // _imageObj.TWITTER_ICON.regX = 0;
-        // _imageObj.TWITTER_ICON.regY = 73;
 
         return image;
     }
 
-    getSpriteSheetContents(property){
+    static getSpriteSheetContents(preloadResult, property){
         var spriteSheet = new createjs.SpriteSheet({
-            images:[this.queue.getResult(property.id)],
+            images:[preloadResult],
             frames: property.frames,
             animations: property.animations
         });
@@ -125,10 +132,10 @@ export default class PreloadState{
         return ss;
     }
 
-    getSoundContent(property){
+    static getSoundContent(property){
         return createjs.Sound.createInstance(property.id);
     }
-    getTextContent(property){
+    static getTextContent(property){
         var text = new createjs.Text();
         text.x = State.gameScrean.width * property.ratioX;
         text.y = State.gameScrean.height * property.ratioY;
@@ -140,5 +147,26 @@ export default class PreloadState{
         text.rotation = property.rotation;
 
         return text;
+    }
+
+    static getLoadImage(){
+        const loadImage = new createjs.Bitmap(loadImageBase64);
+        loadImage.scaleY = loadImage.scaleX = State.screenScale * 0.5;
+        loadImage.x = State.gameScrean.width * 0.2;
+        loadImage.y = State.gameScrean.height * 0.9;
+        loadImage.regX = loadImage.image.width * 0.5;
+        loadImage.regY = loadImage.image.height * 0.5;
+
+        return loadImage;
+    }
+
+    static getLoadText(){
+        const loadText = new createjs.Text();
+        loadText.x = State.gameScrean.width * 0.6;
+        loadText.y = State.gameScrean.height * 0.9;
+        loadText.font = State.gameScrean.width * 1/20 + "px " + "Courier";
+        loadText.textAlign = "center";
+
+        return loadText;
     }
 }
