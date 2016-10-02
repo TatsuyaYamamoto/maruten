@@ -66,7 +66,10 @@ export default class GameoverEngine {
         };
         const tweet = ()=>{
             window.location.href=
-                `https://twitter.com/intent/tweet?hashtags=まるてん！&text=${this.getTweetText()}&url=http://games.sokontokoro-factory.net/maruten/`;
+`https://twitter.com/intent/tweet
+?hashtags=まるてん！+%23そこんところ工房
+&text=${this.getTweetText()}
+&url=http://games.sokontokoro-factory.net/maruten/`;
         };
 
         return {
