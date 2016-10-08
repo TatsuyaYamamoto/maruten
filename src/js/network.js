@@ -1,6 +1,7 @@
 import request from "superagent";
 
-import { config, properties } from './config.js'
+import config from './static/config.js'
+import properties from './static/properties.js'
 import State from './state.js'
 
 export default class Network{

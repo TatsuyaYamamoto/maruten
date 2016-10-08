@@ -1,6 +1,6 @@
 import State from '../state.js';
 import Util from '../util.js'
-import { properties } from '../config.js'
+import properties from '../static/properties.js'
 
 export default class TopEngine {
     constructor(callbackMenuGameState){

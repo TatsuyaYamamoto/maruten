@@ -1,4 +1,4 @@
-import { config } from './config.js'
+import config from './static/config.js'
 
 export default class TickEngine{
     constructor(){

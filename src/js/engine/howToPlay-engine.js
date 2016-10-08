@@ -1,7 +1,6 @@
 import State from '../state.js';
 import Util from '../util.js'
 import GameEngine from './game-engine.js'
-import Feather from '../character/feather.js';
 import Enemy from '../character/enemy.js';
 
 export default class HowToPlayEngine extends GameEngine{

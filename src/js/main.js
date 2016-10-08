@@ -1,5 +1,5 @@
 import State from './state.js';
-import { config } from './config.js';
+import config from './static/config.js';
 import StateMachine from './stateMachine.js';
 import Util from './util.js';
 import Network from './network.js'

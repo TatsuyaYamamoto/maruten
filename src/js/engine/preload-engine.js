@@ -1,6 +1,7 @@
 import State from '../state.js';
 import loadImageBase64 from '../imageBase64/loadImageBase64.js'
-import { config, properties, manifest } from '../config.js';
+import properties from '../static/properties.js';
+import manifest from '../static/manifest.js';
 import BrandingAnimation from '../branding-animation.js';
 
 export default class PreloadState{

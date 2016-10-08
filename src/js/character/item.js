@@ -1,4 +1,4 @@
-import { config, properties } from '../config.js'
+import properties from '../static/properties.js'
 import State from '../state.js'
 
 

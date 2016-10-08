@@ -1,6 +1,6 @@
 import State from '../state.js';
 import Util from '../util.js'
-import { config } from '../config.js'
+import config from '../static/config.js'
 
 export default class CreditEngine {
     constructor(callbackMenuGameState){

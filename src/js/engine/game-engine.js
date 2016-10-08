@@ -1,5 +1,5 @@
 import State from '../state.js';
-import {config} from '../config.js'
+import config from '../static/config.js'
 import Util from '../util.js'
 import Player from '../character/player.js';
 import Enemy from '../character/enemy.js';

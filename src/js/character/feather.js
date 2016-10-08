@@ -1,5 +1,6 @@
 import State from '../state.js';
-import {config, properties} from '../config.js'
+import config from '../static/config.js'
+import properties from '../static/properties.js'
 
 /**
  * ずら丸が投げる黒い羽
