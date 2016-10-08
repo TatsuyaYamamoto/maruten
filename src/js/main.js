@@ -1,5 +1,5 @@
 import State from './state.js';
-import config from './static/config.js';
+import { STANDARD_PIXEL_SIZE } from './static/config.js';
 import StateMachine from './stateMachine.js';
 import Util from './util.js';
 import Network from './network.js'
@@ -11,20 +11,18 @@ window.onload = function(){
 	State.deferredCheckLogin = Network.getUser();
 	
 	/*---------- ゲーム画面の初期化 ----------*/
-	State.screenScale = Util.initScreenScale(
-		config.system.gamescrean.height, 
-		config.system.gamescrean.width);     // 背景イラストの幅);	// 拡大率の計算
+	const scale = Util.initScreenScale(STANDARD_PIXEL_SIZE.HEIGHT, STANDARD_PIXEL_SIZE.WIDTH);
+	const screenHeight = STANDARD_PIXEL_SIZE.HEIGHT * scale;
+	const screenWidth = STANDARD_PIXEL_SIZE.WIDTH * scale;
+
+	State.screenScale = scale;
 	State.gameStage = new createjs.Stage("gameScrean");
-	State.gameScrean = Util.getScreen(
-		"gameScrean",
-		config.system.gamescrean.height, 
-		config.system.gamescrean.width,
-		State.screenScale);
+	State.gameScrean = Util.getScreen("gameScrean", screenHeight, screenWidth);
 
 	Util.showText("booting up",
-		State.gameScrean.width*0.5,
-		State.gameScrean.height*0.5,
-		State.gameScrean.width*0.04,
+		State.gameScrean.width * 0.5,
+		State.gameScrean.height * 0.5,
+		State.gameScrean.width * 0.04,
 		"Courier", 
 		"center");
 

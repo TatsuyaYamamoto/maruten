@@ -4,20 +4,17 @@ import State from './state.js';
 export default class Util{
 
     static initScreenScale(height, width){
-        var scale;
         if(window.innerHeight/window.innerWidth < height/width){
-            scale = window.innerHeight/height;
+            return window.innerHeight/height;
         }else{
-            scale = window.innerWidth/width;
+            return window.innerWidth/width;
         }
-
-        return scale;
     }
 
-    static getScreen(elementId, height, width, scale){
+    static getScreen(elementId, height, width){
         var screen = document.getElementById(elementId);
-        screen.height = height * scale;
-        screen.width = width * scale;
+        screen.height = height;
+        screen.width = width;
         return screen;
     }
 

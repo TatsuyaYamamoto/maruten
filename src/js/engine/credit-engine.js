@@ -1,6 +1,6 @@
 import State from '../state.js';
 import Util from '../util.js'
-import config from '../static/config.js'
+import { LINK } from '../static/constant.js'
 
 export default class CreditEngine {
     constructor(callbackMenuGameState){
@@ -35,19 +35,19 @@ export default class CreditEngine {
         };
 
         const goToSoundeffect = ()=>{
-            window.location.href = config.link.soundeffect;
+            window.location.href = LINK.SOUNDEFFECT_HOME;
         };
 
         const goToOnJin = ()=> {
-            window.location.href = config.link.on_jin;
+            window.location.href = LINK.ONJIN_HOME;
         };
 
         const goToSokontokoro = ()=> {
-            window.location.href = config.link.sokontokoro;
+            window.location.href = LINK.SOKONTOKORO_HOME;
         };
 
         const goToSanzashi = ()=> {
-            window.location.href = config.link.sanzashi;
+            window.location.href = LINK.SANZASHI_TWITTER;
         };
 
 

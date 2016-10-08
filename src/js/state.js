@@ -1,18 +1,15 @@
+import { CHARACTER } from './static/constant.js'
+
 export default {
     gameStage: null,
     gameScrean: null,
     screenScale: null,
 
-    gameFrame: 0,
-    nextCheckFrame: 0,
     gameScore: 0,
-
-    tickListener: null,
 
     isSoundMute: false,
 
-    playCharacter: "hanamaru",
-    player: null,
+    playCharacter: CHARACTER.HANAMARU,
 
     deferredCheckLogin: null,
     isLogin: false,

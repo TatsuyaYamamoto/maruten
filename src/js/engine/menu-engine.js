@@ -1,6 +1,6 @@
 import State from '../state.js';
 import Util from '../util.js'
-import config from '../static/config.js'
+import { ENDPOINT, LINK } from '../static/constant.js'
 
 export default class MenuEngine {
     constructor(tick, callbackGameState, callbackHowToPlayState, callbackCreditState){
@@ -74,11 +74,11 @@ export default class MenuEngine {
         };
 
         const goToTwitterHome = ()=> {
-            window.location.href=config.link.t28_twitter;
+            window.location.href = LINK.T28_TWITTER;
         };
 
         const goToRanking = ()=> {
-            window.location.href = "http://games.sokontokoro-factory.net/ranking/?game=maruten"
+            window.location.href = LINK.RANKING
         };
 
         const turnSoundSwitch = ()=>{
@@ -97,7 +97,7 @@ export default class MenuEngine {
             alertify.confirm("ランキングシステムにログインします！", (result)=>{
                 if(result){
                     State.object.sound.OK.play("none",0,0,0,1,0);
-                    window.location.href = config.api.login;
+                    window.location.href = ENDPOINT.LOGIN;
                 }else{
                     State.object.sound.BACK.play("none",0,0,0,1,0);
                 }
@@ -109,7 +109,7 @@ export default class MenuEngine {
             alertify.confirm("ログアウトします。ランキング登録はログイン中のみ有効です。", (result)=>{
                 if(result){
                     State.object.sound.OK.play("none",0,0,0,1,0);
-                    window.location.href = config.api.logout + "?redirect=maruten";
+                    window.location.href = ENDPOINT.LOGOUT
                 }else{
                     State.object.sound.BACK.play("none",0,0,0,1,0);
                 }

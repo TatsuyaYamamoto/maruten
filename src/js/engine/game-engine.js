@@ -1,5 +1,5 @@
 import State from '../state.js';
-import config from '../static/config.js'
+import { GAME_TIME_LENGTH_SECONDS, ADD_TIME_SECONDS_BY_ITEM} from '../static/config.js'
 import Util from '../util.js'
 import Player from '../character/player.js';
 import Enemy from '../character/enemy.js';
@@ -26,7 +26,7 @@ export default class GameEngine{
 		this.frameOfAppearingAddTimeItem = 0;	// タイマー加算アイテムが次に出現するフレーム数
 		this.frameOfDisappearingAddTimeItem = 0;	// タイマー加算アイテムが消滅するフレーム数
 
-		this.timer = new Timer(config.system.gameTime, ()=>{
+		this.timer = new Timer(GAME_TIME_LENGTH_SECONDS, ()=>{
 			this.finish();
 		});
 
@@ -139,7 +139,7 @@ export default class GameEngine{
 				this.disappearAddTimeItem();
 
 				State.object.sound.MICAN.play("none",0,0,0,1,0);
-				this.timer.addCount(config.system.additionalTimeByItem);
+				this.timer.addCount(ADD_TIME_SECONDS_BY_ITEM);
 			}
 		})
 	}

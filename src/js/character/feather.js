@@ -1,5 +1,5 @@
 import State from '../state.js';
-import config from '../static/config.js'
+import { FEATHER_FLY_TIME_MILLIS } from '../static/config.js'
 import properties from '../static/properties.js'
 
 /**
@@ -34,7 +34,7 @@ export default class Feather{
         let destinationY = this.img.y + destination * Math.sin(angle);
 
         createjs.Tween.get(this.img)
-            .to({x: destinationX, y : destinationY}, config.system.featherFlyTime)
+            .to({x: destinationX, y : destinationY}, FEATHER_FLY_TIME_MILLIS)
             .call(()=>{
                 callback();
             });

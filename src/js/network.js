@@ -1,6 +1,6 @@
 import request from "superagent";
 
-import config from './static/config.js'
+import { ENDPOINT } from './static/constant.js'
 import properties from './static/properties.js'
 import State from './state.js'
 
@@ -9,7 +9,7 @@ export default class Network{
 
         return new Promise((resolve, reject) => {
             request
-                .get(config.api.user)
+                .get(ENDPOINT.USERS)
                 .withCredentials()
                 .end((err, res) => {
                     if (err || !res.ok) {
@@ -34,7 +34,7 @@ export default class Network{
 
     static postScore(point){
         request
-            .post(config.api.score)
+            .post(ENDPOINT.SCORES)
             .withCredentials()
             .type('application/json')
             .send({'point': point})
@@ -51,7 +51,7 @@ export default class Network{
 
     static postPlayLog(point){
         request
-            .post(config.api.playlog)
+            .post(ENDPOINT.PLAY_LOG)
             .withCredentials()
             .type('application/json')
             .send({'point': point})
