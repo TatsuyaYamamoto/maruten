@@ -3,8 +3,15 @@ export default {
         HANAMARU: 'hanamaru'
     },
     image: {
-        TITLE_LOGO: {
-            id : "TITLE_LOGO",
+        TITLE_LOGO_HANAMARU: {
+            id : "TITLE_LOGO_HANAMARU",
+            ratioX: 0.5,
+            ratioY: 0.5,
+            scale: 1,
+            alpha: 1
+        },
+        TITLE_LOGO_YOU: {
+            id : "TITLE_LOGO_YOU",
             ratioX: 0.5,
             ratioY: 0.5,
             scale: 1,
@@ -31,8 +38,22 @@ export default {
             scale: 1,
             alpha: 1
         },
+        GAMEOVER_IMAGE_YOU: {
+            id : "GAMEOVER_IMAGE_YOU",
+            ratioX: 0.5,
+            ratioY: 0.65,
+            scale: 1,
+            alpha: 1
+        },
         MENU_LOGO: {
             id : "MENU_LOGO",
+            ratioX: 0.5,
+            ratioY: 0.5,
+            scale: 1,
+            alpha: 1
+        },
+        MENU_LOGO_YOU: {
+            id : "MENU_LOGO_YOU",
             ratioX: 0.5,
             ratioY: 0.5,
             scale: 1,
@@ -47,6 +68,20 @@ export default {
         },
         BUTTON_HOW: {
             id : "BUTTON_HOW",
+            ratioX: 0.55,
+            ratioY: 0.76,
+            scale: 1,
+            alpha: 1
+        },
+        BUTTON_START_YOU: {
+            id : "BUTTON_START_YOU",
+            ratioX: 0.42,
+            ratioY: 0.3,
+            scale: 1,
+            alpha: 1
+        },
+        BUTTON_HOW_YOU: {
+            id : "BUTTON_HOW_YOU",
             ratioX: 0.55,
             ratioY: 0.76,
             scale: 1,
@@ -80,6 +115,13 @@ export default {
             scale: 1,
             alpha: 1
         },
+        BUTTON_BACK_MENU_FROM_HOW_YOU: {
+            id : "BUTTON_BACK_MENU_YOU",
+            ratioX: 0.15,
+            ratioY: 0.9,
+            scale: 1,
+            alpha: 1
+        },
         BUTTON_TWITTER_TOP: {
             id : "BUTTON_TWITTER_TOP",
             ratioX: 0.9,
@@ -89,6 +131,13 @@ export default {
         },
         BUTTON_TWITTER_GAMEOVER_HANAMARU: {
             id : "BUTTON_TWITTER_GAMEOVER_HANAMARU",
+            ratioX: 0.8,
+            ratioY: 0.1,
+            scale: 1,
+            alpha: 1
+        },
+        BUTTON_TWITTER_GAMEOVER_YOU: {
+            id : "BUTTON_TWITTER_GAMEOVER_YOU",
             ratioX: 0.8,
             ratioY: 0.1,
             scale: 1,
@@ -115,6 +164,13 @@ export default {
             scale: 1,
             alpha: 1
         },
+        BUTTON_BACK_MENU_FROM_GAME_YOU: {
+            id : "BUTTON_BACK_MENU_YOU",
+            ratioX: 0.5,
+            ratioY: 0.1,
+            scale: 1,
+            alpha: 1
+        },
         BUTTON_RESTART: {
             id : "BUTTON_RESTART",
             ratioX: 0.2,
@@ -122,8 +178,22 @@ export default {
             scale: 1,
             alpha: 1
         },
+        BUTTON_RESTART_YOU: {
+            id : "BUTTON_RESTART_YOU",
+            ratioX: 0.2,
+            ratioY: 0.1,
+            scale: 1,
+            alpha: 1
+        },
         FEATHER: {
             id : "FEATHER",
+            ratioX: 0.5,
+            ratioY: 0.5,
+            scale: 1,
+            alpha: 1
+        },
+        SHITAKE: {
+            id : "SHITAKE",
             ratioX: 0.5,
             ratioY: 0.5,
             scale: 1,
@@ -150,6 +220,35 @@ export default {
             scale: 0.5,
             alpha: 1,
             rotation: -10
+        },
+        COUNT_RIKO: {
+            id : "RIKO",
+            ratioX: 0.77,
+            ratioY: 0.91,
+            scale: 0.5,
+            alpha: 1
+        },
+        RESULT_COUNT_RIKO: {
+            id : "RIKO",
+            ratioX: 0.33,
+            ratioY: 0.43,
+            scale: 0.5,
+            alpha: 1,
+            rotation: -10
+        },
+        BUTTON_CHANGE_CHARA_YOSHIKO: {
+            id: "BUTTON_CHANGE_CHARA_YOSHIKO",
+            ratioX: 0.75,
+            ratioY: 0.5,
+            scale: 1,
+            alpha: 1
+        },
+        BUTTON_CHANGE_CHARA_RIKO: {
+            id: "BUTTON_CHANGE_CHARA_RIKO",
+            ratioX: 0.75,
+            ratioY: 0.5,
+            scale: 1,
+            alpha: 1
         }
     },
     spritesheet: {
@@ -169,8 +268,31 @@ export default {
                 },
                 prepareThrow: {
                     frames: [1]
-                    // speed: 0.5,
-                    // next: "wait"
+                },
+                throw: {
+                    frames: [2,3],
+                    speed: 0.5,
+                    next: "wait"
+                }
+            },
+            firstAnimation: "wait"
+        },
+        YOU: {
+            id : "SS_YOU",
+            ratioX: 0.5,
+            ratioY: 0.9,
+            scale: 1,
+            alpha: 1,
+            frames: {
+                width: 383,
+                height: 383
+            },
+            animations: {
+                wait: {
+                    frames: [0]
+                },
+                prepareThrow: {
+                    frames: [1]
                 },
                 throw: {
                     frames: [2,3],
@@ -187,10 +309,30 @@ export default {
             scale: 0.4,
             alpha: 1,
             frames: {
-                // width: 467,
-                // height: 467
                 width: 147,
-                height: 240
+                height: 239
+            },
+            animations: {
+                wait: {
+                    frames: [0, 1],
+                    speed: 0.1,
+                    next: true
+                },
+                hit: {
+                    frames: [2]
+                }
+            },
+            firstAnimation: "hit"
+        },
+        RIKO: {
+            id : "SS_RIKO",
+            ratioX: 0.8,
+            ratioY: 0.91,
+            scale: 0.4,
+            alpha: 1,
+            frames: {
+                width: 147,
+                height: 239
             },
             animations: {
                 wait: {
@@ -293,6 +435,21 @@ export default {
                 "無理して普通になろうとする善子ちゃん。\n" +
                 "まるを操作して黒い羽でよしこを堕天させよう！\n\n" +
                 "指でスライドさせて投げるずら〜！"
+        },
+        HOW_TO_PLAY_YOU: {
+            ratioX: 0.5,
+            ratioY: 0.05,
+            size: 0.04,
+            family: "Courier",
+            align: "center",
+            lineHeight: 0.05,
+            text :
+            "「そのくらいがまんする！」\n" +
+            "って言ってたのに、\n" +
+            "スカートの丈に文句を言っているリコちゃん。\n\n" +
+            "ヨウちゃんを操作して\n" +
+            "しいたけでリコちゃんを堕天させよう！\n" +
+            "指でスライドさせて、全速前進ヨーソロー！"
         },
         SCORE_COUNT: {
             ratioX: 0.85,

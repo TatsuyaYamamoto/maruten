@@ -6,27 +6,28 @@ import State from './state.js'
 
 export default class Network{
     static getUser(){
-
+        let isLoggedin = false;
         return new Promise((resolve, reject) => {
             request
                 .get(ENDPOINT.USERS)
                 .withCredentials()
                 .end((err, res) => {
-                    if (err || !res.ok) {
-                        State.isLogin = false;
-                        reject(err);
-                    }else{
-                        // ログイン完了通知
-                        alertify.log("ランキングシステム ログイン中！", "success", 3000);
-
-                        State.isLogin = true;
-
+                    if (!err && res.ok) {
                         // response body格納
                         State.user.id = res.body.user_id;
                         State.user.name = res.body.user_name;
                         properties.asyncImage.TWITTER_ICON.url = res.body.icon_url;
 
+                        // ログイン完了通知
+                        alertify.log("ランキングシステム ログイン中！", "success", 3000);
+
+                        // Promise response
+                        State.isLogin = true;
                         resolve();
+                    }else{
+                        // Promise response
+                        State.isLogin = false;
+                        reject();
                     }
                 });
         })

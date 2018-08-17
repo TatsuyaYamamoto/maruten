@@ -2,6 +2,7 @@ import State from '../state.js';
 import Util from '../util.js'
 import GameEngine from './game-engine.js'
 import Enemy from '../character/enemy.js';
+import { CHARACTER } from '../static/constant.js'
 
 export default class HowToPlayEngine extends GameEngine{
     constructor(tick, callbackMenuGameState){
@@ -12,14 +13,29 @@ export default class HowToPlayEngine extends GameEngine{
     start(){
         this.handleLinkButtonEventListener().add();
 
-        Util.addChildren([
+        const targetChildren = [
             State.object.image.BACKGROUND,
-            State.object.image.BUTTON_BACK_MENU_FROM_HOW,
             State.object.image.ITEM_MICAN,
-            State.object.text.HOW_TO_PLAY,
             State.object.text.INTRODUCTION_ITEM,
             this.player.img
-        ]);
+        ];
+
+        switch(State.playCharacter){
+            case CHARACTER.HANAMARU:
+                targetChildren.push(
+                    State.object.text.HOW_TO_PLAY,
+                    State.object.image.BUTTON_BACK_MENU_FROM_HOW
+                );
+                break;
+            case CHARACTER.YOU:
+                targetChildren.push(
+                    State.object.text.HOW_TO_PLAY_YOU,
+                    State.object.image.BUTTON_BACK_MENU_FROM_HOW_YOU
+                );
+                break;
+        }
+
+        Util.addChildren(targetChildren);
 
         this.appearYoshiko();
 
@@ -101,11 +117,24 @@ export default class HowToPlayEngine extends GameEngine{
 
         return {
             add: ()=> {
-                State.object.image.BUTTON_BACK_MENU_FROM_HOW.addEventListener("mousedown", backMenu)
-
+                switch(State.playCharacter){
+                    case CHARACTER.HANAMARU:
+                        State.object.image.BUTTON_BACK_MENU_FROM_HOW.addEventListener("mousedown", backMenu)
+                        break;
+                    case CHARACTER.YOU:
+                        State.object.image.BUTTON_BACK_MENU_FROM_HOW_YOU.addEventListener("mousedown", backMenu)
+                        break;
+                }
             },
             remove: ()=> {
-                State.object.image.BUTTON_BACK_MENU_FROM_HOW.removeAllEventListeners("mousedown")
+                switch(State.playCharacter){
+                    case CHARACTER.HANAMARU:
+                        State.object.image.BUTTON_BACK_MENU_FROM_HOW.removeAllEventListeners("mousedown")
+                        break;
+                    case CHARACTER.YOU:
+                        State.object.image.BUTTON_BACK_MENU_FROM_HOW_YOU.removeAllEventListeners("mousedown")
+                        break;
+                }
             }
         }
     }

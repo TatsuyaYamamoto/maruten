@@ -1,3 +1,5 @@
+export const DEBUG = true;
+
 export const FPS = 30;
 
 export const STANDARD_PIXEL_SIZE = {

@@ -1,19 +1,20 @@
 import State from '../state.js';
 import Util from '../util.js'
-import { ENDPOINT, LINK } from '../static/constant.js'
+import { ENDPOINT, LINK, CHARACTER } from '../static/constant.js'
 
 export default class MenuEngine {
-    constructor(tick, callbackGameState, callbackHowToPlayState, callbackCreditState){
-        this.tick = tick;
-        this.callbackGameState = callbackGameState;
-        this.callbackHowToPlayState = callbackHowToPlayState;
-        this.callbackCreditState = callbackCreditState;
+    constructor(stateMachine){
+        this.tick = stateMachine.tick;
+        this.callbackGameState = stateMachine.gameState;
+        this.callbackHowToPlayState = stateMachine.howToPlayState;
+        this.callbackCreditState = stateMachine.creditState;
+        this.callbackTopState = stateMachine.topState;
 
         this.handleLinkButtonEventListener().add();
     }
 
     start(){
-        let targetChildren = [State.object.image.BACKGROUND];
+        const targetChildren = [State.object.image.BACKGROUND];
         if(State.isLogin){
             targetChildren.push(
                 State.object.image.BUTTON_TWITTER_LOGOUT,
@@ -22,15 +23,39 @@ export default class MenuEngine {
         }else{
             targetChildren.push(State.object.image.BUTTON_TWITTER_LOGIN);
         }
+
+        switch(State.playCharacter){
+            case CHARACTER.HANAMARU:
+                targetChildren.push(
+                    State.object.image.MENU_LOGO,
+                    State.object.image.BUTTON_START,
+                    State.object.image.BUTTON_HOW
+                );
+                break;
+            case CHARACTER.YOU:
+                targetChildren.push(
+                    State.object.image.MENU_LOGO_YOU,
+                    State.object.image.BUTTON_START_YOU,
+                    State.object.image.BUTTON_HOW_YOU
+                );
+                break;
+        }
+
         targetChildren.push(
-            State.object.image.MENU_LOGO,
-            State.object.image.BUTTON_START,
-            State.object.image.BUTTON_HOW,
             State.object.image.BUTTON_RANKING,
             State.object.image.BUTTON_CREDIT,
             State.object.image.BUTTON_TWITTER_TOP,
             State.object.spritesheet.BUTTON_SOUND_SPRITESHEET
         );
+
+        switch(State.playCharacter){
+            case CHARACTER.HANAMARU:
+                targetChildren.push(State.object.image.BUTTON_CHANGE_CHARA_RIKO);
+                break;
+            case CHARACTER.YOU:
+                targetChildren.push(State.object.image.BUTTON_CHANGE_CHARA_YOSHIKO);
+                break;
+        }
 
         Util.addChildren(targetChildren);
 
@@ -116,27 +141,66 @@ export default class MenuEngine {
             })
         };
 
+        const changeCharaAndRstart = ()=>{
+            this.tick.remove();
+            this.handleLinkButtonEventListener().remove();
+
+            State.object.sound.OK.play("none",0,0,0,1,0);
+
+            switch(State.playCharacter){
+                case CHARACTER.HANAMARU:
+                    State.playCharacter = CHARACTER.YOU;
+                    break;
+                case CHARACTER.YOU:
+                    State.playCharacter = CHARACTER.HANAMARU;
+                    break;
+            }
+
+            this.callbackTopState();
+        };
 
         return {
             add: ()=> {
-                State.object.image.BUTTON_START.addEventListener("mousedown", goToGame);
-                State.object.image.BUTTON_HOW.addEventListener('mousedown', goToHowToPlay);
                 State.object.image.BUTTON_CREDIT.addEventListener('mousedown', goToCredit);
                 State.object.image.BUTTON_TWITTER_LOGIN.addEventListener("mousedown", login);
                 State.object.image.BUTTON_TWITTER_LOGOUT.addEventListener('mousedown', logout);
                 State.object.image.BUTTON_TWITTER_TOP.addEventListener('mousedown', goToTwitterHome);
                 State.object.image.BUTTON_RANKING.addEventListener("mousedown", goToRanking);
                 State.object.spritesheet.BUTTON_SOUND_SPRITESHEET.addEventListener('mousedown', turnSoundSwitch);
+
+                switch(State.playCharacter){
+                    case CHARACTER.HANAMARU:
+                        State.object.image.BUTTON_START.addEventListener("mousedown", goToGame);
+                        State.object.image.BUTTON_HOW.addEventListener('mousedown', goToHowToPlay);
+                        State.object.image.BUTTON_CHANGE_CHARA_RIKO.addEventListener("mousedown", changeCharaAndRstart);
+                        break;
+                    case CHARACTER.YOU:
+                        State.object.image.BUTTON_START_YOU.addEventListener("mousedown", goToGame);
+                        State.object.image.BUTTON_HOW_YOU.addEventListener('mousedown', goToHowToPlay);
+                        State.object.image.BUTTON_CHANGE_CHARA_YOSHIKO.addEventListener("mousedown", changeCharaAndRstart);
+                        break;
+                }
             },
             remove: ()=> {
-                State.object.image.BUTTON_START.removeAllEventListeners("mousedown");
-                State.object.image.BUTTON_HOW.removeAllEventListeners("mousedown");
                 State.object.image.BUTTON_CREDIT.removeAllEventListeners("mousedown");
                 State.object.image.BUTTON_TWITTER_LOGIN.removeAllEventListeners("mousedown");
                 State.object.image.BUTTON_TWITTER_LOGOUT.removeAllEventListeners("mousedown");
                 State.object.image.BUTTON_TWITTER_TOP.removeAllEventListeners("mousedown");
                 State.object.image.BUTTON_RANKING.removeAllEventListeners("mousedown");
                 State.object.spritesheet.BUTTON_SOUND_SPRITESHEET.removeAllEventListeners("mousedown");
+
+                switch(State.playCharacter) {
+                    case CHARACTER.HANAMARU:
+                        State.object.image.BUTTON_START.removeAllEventListeners("mousedown");
+                        State.object.image.BUTTON_HOW.removeAllEventListeners("mousedown");
+                        State.object.image.BUTTON_CHANGE_CHARA_RIKO.removeAllEventListeners("mousedown");
+                        break;
+                    case CHARACTER.YOU:
+                        State.object.image.BUTTON_START_YOU.removeAllEventListeners("mousedown");
+                        State.object.image.BUTTON_HOW_YOU.removeAllEventListeners("mousedown");
+                        State.object.image.BUTTON_CHANGE_CHARA_YOSHIKO.removeAllEventListeners("mousedown");
+                        break;
+                }
             }
         };
     }

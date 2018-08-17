@@ -1,5 +1,6 @@
 import State from '../state.js';
 import { GAME_TIME_LENGTH_SECONDS, ADD_TIME_SECONDS_BY_ITEM} from '../static/config.js'
+import { CHARACTER } from '../static/constant.js'
 import Util from '../util.js'
 import Player from '../character/player.js';
 import Enemy from '../character/enemy.js';
@@ -70,12 +71,24 @@ export default class GameEngine{
 
 				this.handleTouchEventListener().add();
 
-				Util.addChildren([
-					State.object.image.BACKGROUND,
-					this.player.img,
-					State.object.text.SCORE_COUNT,
-					State.object.image.COUNT_YOSHIKO
-				].concat(this.timer.getElementArray()));
+				switch(State.playCharacter){
+					case CHARACTER.HANAMARU:
+						Util.addChildren([
+							State.object.image.BACKGROUND,
+							this.player.img,
+							State.object.text.SCORE_COUNT,
+							State.object.image.COUNT_YOSHIKO
+						].concat(this.timer.getElementArray()));
+						break;
+					case CHARACTER.YOU:
+						Util.addChildren([
+							State.object.image.BACKGROUND,
+							this.player.img,
+							State.object.text.SCORE_COUNT,
+							State.object.image.COUNT_RIKO
+						].concat(this.timer.getElementArray()));
+						break;
+				}
 
 				this.tick.remove();
 
@@ -190,7 +203,7 @@ export default class GameEngine{
 		State.object.sound.GAME_LOOP.stop();
 		State.object.sound.GAME_END.play("none",0,0,0,0.4,0);
 
-		this.callbackState(this.player)
+		this.callbackState()
 	}
 
 	/************************************

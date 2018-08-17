@@ -41,9 +41,7 @@ export default class StateMachine{
      * ロード画面
      */
     preloadState(){
-        new PreloadEngine(this.tick,
-            ()=>{this.topState();}
-        ).start();
+        new PreloadEngine(StateMachine.instance()).start();
     }
 
     /*************************************
@@ -52,7 +50,7 @@ export default class StateMachine{
     topState(){
         Util.removeAllChildren();
         new TopEngine(()=>{
-            this.menuState();
+            StateMachine.instance().menuState();
         }).start();
     }
 
@@ -62,11 +60,7 @@ export default class StateMachine{
      */
     menuState(){
         Util.removeAllChildren();
-        new MenuEngine(this.tick,
-            ()=>{this.gameState();},
-            ()=>{this.howToPlayState();},
-            ()=>{this.creditState();}
-        ).start();
+        new MenuEngine(StateMachine.instance()).start();
     }
 
     /*************************************
@@ -74,7 +68,9 @@ export default class StateMachine{
      */
     creditState(){
         State.gameStage.removeAllChildren();
-        new CreditEngine(()=>{this.menuState()}).start();
+        new CreditEngine(()=>{
+            StateMachine.instance().menuState()
+        }).start();
     }
 
     /*************************************
@@ -82,7 +78,9 @@ export default class StateMachine{
      */
     howToPlayState(){
         Util.removeAllChildren();
-        new HowToPlayEngine(this.tick, ()=>{this.menuState();}).start();
+        new HowToPlayEngine(this.tick, ()=>{
+            StateMachine.instance().menuState();
+        }).start();
     }
 
     /*************************************
@@ -90,21 +88,20 @@ export default class StateMachine{
      */
     gameState(){
         Util.removeAllChildren();
-        new GameEngine(this.tick, (player)=>{
-            this.gameOverState(player);
+        new GameEngine(this.tick, ()=>{
+            StateMachine.instance().gameOverState();
         }).start();
     }
 
     /*************************************
      * GAMEOVER画面
      */
-    gameOverState(player){
+    gameOverState(){
         Util.removeAllChildren();
         new GameoverEngine(
             this.tick,
-            player,
-            ()=>{this.menuState();},
-            ()=>{this.gameState();}
+            ()=>{StateMachine.instance().menuState();},
+            ()=>{StateMachine.instance().gameState();}
         ).start();
     }
 }

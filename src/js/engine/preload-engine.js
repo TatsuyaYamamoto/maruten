@@ -4,19 +4,22 @@ import properties from '../static/properties.js';
 import manifest from '../static/manifest.js';
 import BrandingAnimation from '../branding-animation.js';
 
-export default class PreloadState{
-    constructor(tick, callback){
-        this.tick = tick;
+import { DEBUG } from '../static/config.js'
+
+export default class PreloadEngine{
+    constructor(stateMachine){
+        this.tick = stateMachine.tick;
+        this.callback = stateMachine.topState;
+
         this.queue = new createjs.LoadQueue();
-        this.callback = callback;
     }
 
     /*****************************
      * ContentStateのエントリーメソッド
      */
     start(){
-        const loadImage = PreloadState.getLoadImage();
-        const loadText = PreloadState.getLoadText();
+        const loadImage = PreloadEngine.getLoadImage();
+        const loadText = PreloadEngine.getLoadText();
         const brandingAnimation = new BrandingAnimation({
             x: State.gameScrean.width * 1/2,
             y: State.gameScrean.height * 1/2,
@@ -56,33 +59,35 @@ export default class PreloadState{
             Object.keys(properties.spritesheet).forEach((key)=> {
                 const prop = properties.spritesheet[key];
                 const preloadResult = this.queue.getResult(prop.id);
-                State.object.spritesheet[key] = PreloadState.getSpriteSheetContents(preloadResult, prop);
+                State.object.spritesheet[key] = PreloadEngine.getSpriteSheetContents(preloadResult, prop);
             });
             Object.keys(properties.sound).forEach((key)=> {
-                State.object.sound[key] = PreloadState.getSoundContent(properties.sound[key]);
+                State.object.sound[key] = PreloadEngine.getSoundContent(properties.sound[key]);
             });
             Object.keys(properties.text).forEach((key)=> {
-                State.object.text[key] = PreloadState.getTextContent(properties.text[key]);
+                State.object.text[key] = PreloadEngine.getTextContent(properties.text[key]);
             });
             Object.keys(properties.image).forEach((key)=> {
                 const prop = properties.image[key];
                 const preloadResult = this.queue.getResult(prop.id);
-                State.object.image[key] = PreloadState.getImageContent(preloadResult, prop);
+                State.object.image[key] = PreloadEngine.getImageContent(preloadResult, prop);
             });
-            State.deferredCheckLogin.then(
-                (isLoggedin)=>{
-                    Object.keys(properties.asyncImage).forEach((key)=> {
-                        State.object.image[key] = PreloadState.getAsyncImageContent(properties.asyncImage[key]);
-                    });
-                }
-            );
 
-            brandingAnimation.promise.then(
-                ()=>{
+            const promiseList = DEBUG?
+                [State.deferredCheckLogin]:
+                [State.deferredCheckLogin, brandingAnimation.promise];
+            
+            Promise.all(promiseList)
+                .then(()=>{
+                    Object.keys(properties.asyncImage).forEach((key)=> {
+                        State.object.image[key] = PreloadEngine.getAsyncImageContent(properties.asyncImage[key]);
+                    });
+                })
+                .catch(()=>{})
+                .then(()=>{
                     this.tick.remove();
                     this.callback();
-                }
-            );
+                });
         });
 
         /* 読み込み開始 */

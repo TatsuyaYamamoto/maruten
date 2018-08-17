@@ -1,4 +1,5 @@
 const apiServerOrigin = "http://api.sokontokoro-factory.net";
+// const apiServerOrigin = "http://localhost:8888";
 const contextPath = "/lovelive";
 
 export const CHARACTER = {

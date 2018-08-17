@@ -1,6 +1,7 @@
 import State from '../state.js';
 import Util from '../util.js'
 import properties from '../static/properties.js'
+import { CHARACTER } from '../static/constant.js'
 
 export default class TopEngine {
     constructor(callbackMenuGameState){
@@ -12,7 +13,7 @@ export default class TopEngine {
     start(){
         Util.addChildren([
             State.object.image.BACKGROUND,
-            TopEngine.getTitleLogChild(State.playCharacter),
+            TopEngine.getTitleLogChild(),
             State.object.text.START
         ]);
         State.gameStage.update();
@@ -22,10 +23,12 @@ export default class TopEngine {
         }
     }
 
-    static getTitleLogChild(playCharacter){
-        switch(playCharacter){
-            case properties.player.HANAMARU:
-                return State.gameStage.addChild(State.object.image.TITLE_LOGO);
+    static getTitleLogChild(){
+        switch(State.playCharacter){
+            case CHARACTER.HANAMARU:
+                return State.gameStage.addChild(State.object.image.TITLE_LOGO_HANAMARU);
+            case CHARACTER.YOU:
+                return State.gameStage.addChild(State.object.image.TITLE_LOGO_YOU);
         }
     }
 
