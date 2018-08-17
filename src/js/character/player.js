@@ -1,20 +1,21 @@
 import State from '../state.js';
-
+import { CHARACTER } from '../static/constant.js'
 
 /**
- * ずら丸クラス
+ * ずら丸、ようちゃんクラス
  */
 export default class Player{
     constructor() {
         switch (State.playCharacter) {
-            case "hanamaru":
+            case CHARACTER.HANAMARU:
                 this.img = State.object.spritesheet.HANAMARU;
+                break;
+            case CHARACTER.YOU:
+                this.img = State.object.spritesheet.YOU;
                 break;
         }
 
         this.img.gotoAndPlay("wait");
-        // this.direction = "N";
-        // this.wait();
     }
 
     wait(){
@@ -27,13 +28,5 @@ export default class Player{
 
     throw(){
         this.img.gotoAndPlay("throw");
-    }
-
-
-    /**
-     * ゲームオーバー時のモーションを実行する
-     */
-    finish(){
-        this.img.gotoAndPlay("FINISH");
     }
 }

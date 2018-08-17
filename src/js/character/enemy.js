@@ -1,17 +1,25 @@
 import properties from '../static/properties.js'
 import State from '../state.js'
-
+import { CHARACTER } from '../static/constant.js'
 
 /**
- * よしこ
+ * よしこ、りこちゃん
  */
 export default class Enemy{
     constructor(x, y){
 
+
         // 新しいimageインスタンスを作成する
         // Object.assignでdeepcopyしたインスタンスをcreatejsが読み込めない
-        this.img = new createjs.Sprite(State.object.spritesheet.YOSHIKO.spriteSheet);
-
+        switch(State.playCharacter){
+            case CHARACTER.HANAMARU:
+                this.img = new createjs.Sprite(State.object.spritesheet.YOSHIKO.spriteSheet);
+                break;
+            case CHARACTER.YOU:
+                this.img = new createjs.Sprite(State.object.spritesheet.RIKO.spriteSheet);
+                break;
+        }
+        
         this.img.x = x;
         this.img.y = y;
 
